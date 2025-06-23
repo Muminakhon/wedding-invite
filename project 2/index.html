@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Приглашение на свадьбу</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Libre+Baskerville&display=swap" rel="stylesheet" />
+<style>
+  body {
+    margin: 0;
+    font-family: 'Libre Baskerville', serif;
+    overflow-x: hidden;
+    transition: background-color 1s ease;
+    scroll-behavior: smooth;
+    background-color: #000;
+    color: #fff;
+  }
+
+  /* FIXED COVER с фото */
+  .cover {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 1s ease;
+    pointer-events: auto;
+  }
+
+  .cover.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .cover h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .cover img {
+    width: 95%;
+    max-width: 500px;
+    border-radius: 16px;
+    cursor: pointer;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+    transition: transform 0.4s ease;
+    border: 2px solid white;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(0,0,0,0.6));
+  }
+
+  .cover p {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #ccc;
+  }
+
+  /* Секции с контентом */
+  main {
+  margin-top: 0; /* убрал отступ сверху, чтобы текст сразу был сверху */
+}
+
+section {
+  min-height: auto; /* не обязательно 100vh */
+  padding: 30px 20px 40px; /* меньше сверху, чуть больше снизу */
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease, transform 1s ease;
+  font-weight: 600; /* жирный текст */
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Приглашение */
+#invite {
+  color: #fff;
+}
+
+#invite h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+#invite .date-banner {
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  margin: 10px auto 20px;
+  padding: 12px 0;
+  max-width: 280px;
+  font-weight: 700;
+}
+
+#invite p {
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto 20px;
+  color: #ccc;
+  font-weight: 600;
+}
+
+/* Локация - черный фон, белый текст */
+.location-box {
+  background-color: #000;
+  color: #fff;
+  padding: 20px 25px;
+  margin: 60px auto 40px; /* 30px сверху */
+  max-width: 320px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 0 15px rgba(253, 179, 97, 0.7);
+}
+
+
+.location-box h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: #FDB361; /* золотистый цвет заголовка */
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 1.5px;
+}
+
+.location-box p {
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.location-box a {
+  display: inline-block;
+  background-color: #FDB361; /* золотистая кнопка */
+  color: black;
+  text-decoration: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.location-box a:hover {
+  background-color: #e6a545; /* чуть темнее при наведении */
+  color: #000;
+  cursor: pointer;
+}
+
+
+
+  /* Программа */
+  #program {
+    background-color: #555555;
+    color: #fff;
+    padding-top: 150px;
+  }
+  #program h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+  }
+.program-item {
+  position: relative;
+  padding-top: 15px;
+  max-width: 320px;
+  margin: 20px auto;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.program-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+}
+
+
+  /* Dress Code */
+  #dresscode {
+    background-color: #fff;
+    color: #333;
+    padding-top: 150px;
+    font-style: italic;
+  }
+  #dresscode h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    margin-bottom: 40px;
+    color: #000;
+    letter-spacing: 2px;
+  }
+  #dresscode p {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+  }
+
+.color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 260px;
+  margin: 20px auto 60px; /* увеличен нижний отступ */
+  gap: 20px;
+  /* Для выравнивания нижних 2х по центру используем грид */
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-auto-rows: 60px;
+  justify-content: center;
+  row-gap: 20px;
+  column-gap: 20px;
+}
+
+/* Позиционирование: 3 элемента сверху в ряд, 2 снизу — по центру */
+.color-palette > img:nth-child(4) {
+  grid-column: 2; /* вторая колонка */
+  grid-row: 2;
+}
+.color-palette > img:nth-child(5) {
+  grid-column: 3; /* третья колонка */
+  grid-row: 2;
+}
+
+.color-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  border: 2px solid #fff;
+  display: block;
+}
+
+.footer {
+  background-color: #fff; /* белый фон */
+  color: #000000; /* нежный золотистый цвет текста */
+  text-align: center;
+  padding: 40px 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin-top: 5px;
+  box-shadow: inset 0 5px 20px -10px #ffffff88;
+}
+
+
+</style>
+</head>
+<body>
+
+<audio id="bgmusic" src="audio/Billie Eilish, Khalid lovely.m4a" preload="auto"></audio>
+
+<!-- FIXED COVER -->
+<div class="cover" id="cover">
+  <h2>Приглашение на свадьбу</h2>
+  <img src="img/IMG_2197.JPG" alt="Открыть приглашение" onclick="openInvite()" />
+  <p>Нажмите на фото, чтобы открыть приглашение</p>
+</div>
+
+<!-- Контент под fixed cover -->
+<main>
+  <!-- Приглашение -->
+  <section id="invite">
+    <h1>Wedding Day</h1>
+    <p>Мы верим, что этот день станет красивым началом нашей счастливой совместной жизни.</p>
+    <div class="date-banner">28 ИЮНЯ 2025</div>
+    <p>Мы вас ждём на свадьбу!</p>
+
+  <div class="location-box">
+  <h2>ЛОКАЦИЯ</h2>
+  <p>город Худжанд, улица Гагарина 62а<br>Ресторан "Анситу"</p>
+  <a href="https://maps.app.goo.gl/HkA3e3GiptDz1aAy8" target="_blank">Построить маршрут</a>
+</div>
+
+  </section>
+
+  <!-- Программа -->
+  <section id="program">
+    <h1>Wedding Program</h1>
+    <div class="program-item">14:00 ЗАГС</div>
+    <div class="program-item">18:00 Свадьба</div>
+    <div class="program-item">21:00 Финал</div>
+  </section>
+
+  <!-- Dress Code -->
+  <section id="dresscode">
+    <h1>Dress Code</h1>
+    <p>
+      Мы будем искренне благодарны, если вы поддержите нашу цветовую палитру: 
+    </p>
+<div class="color-palette">
+  <img class="color-circle" src="img/1.jpg" alt="Синий цвет" />
+  <img class="color-circle" src="img/2.jpg" alt="Сиреневый цвет" />
+  <img class="color-circle" src="img/3.jpeg" alt="Белый цвет" />
+  <img class="color-circle" src="img/4.jpg" alt="Бежевый цвет" />
+  <img class="color-circle" src="img/5.webp" alt="Розовый цвет" />
+  <img class="color-circle" src="img/6.jpg" alt="Белый цвет" />
+</div>
+
+
+  </section>
+<hr>
+</main>
+<footer class="footer">
+  <p>Спасибо, что вы с нами в этот особенный день! Мы с нетерпением ждём встречи и вашей поддержки.</p>
+</footer>
+
+<script>
+  const cover = document.getElementById('cover');
+  const music = document.getElementById('bgmusic');
+  const inviteSection = document.getElementById('invite');
+  const sections = document.querySelectorAll('main section');
+
+  function openInvite() {
+    // Скрываем cover
+    cover.classList.add('hidden');
+    // Запускаем музыку
+    music.play();
+    // Показываем приглашение
+    inviteSection.classList.add('visible');
+    // Позволяем скроллить страницу
+    document.body.style.overflowY = 'auto';
+  }
+
+  // Сначала блокируем прокрутку, чтобы не скроллили пока cover открыт
+  document.body.style.overflowY = 'hidden';
+
+  // Отслеживаем скролл для плавного появления секций и смены фона
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const viewportHeight = window.innerHeight;
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < viewportHeight * 0.75 && rect.bottom > viewportHeight * 0.25) {
+        section.classList.add('visible');
+      } else {
+        section.classList.remove('visible');
+      }
+    });
+
+    // Меняем фон в зависимости от прокрутки
+    const inviteHeight = inviteSection.offsetHeight;
+    const programHeight = document.getElementById('program').offsetHeight;
+
+    if (scrollY < inviteHeight * 0.6) {
+      document.body.style.backgroundColor = '#000000';
+      document.body.style.color = '#fff';
+    } else if (scrollY < inviteHeight + programHeight * 0.6) {
+      document.body.style.backgroundColor = '#555555';
+      document.body.style.color = '#fff';
+    } else {
+      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.color = '#333333';
+    }
+  });
+
+  function openInvite() {
+  cover.classList.add('hidden');
+  // Через 1 сек — скрываем cover display:none чтобы он не занимал место
+  setTimeout(() => {
+    cover.style.display = 'none';
+  }, 1000);
+
+  music.play();
+  inviteSection.classList.add('visible');
+  document.body.style.overflowY = 'auto';
+}
+
+</script>
+
+</body>
+</html>
